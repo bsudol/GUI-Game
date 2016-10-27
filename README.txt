@@ -1,4 +1,4 @@
-Basia Sudol, CS 2110 A5 Project, Oct 26, 2016
+Basia Sudol, Drew Mera, CS 2110 A5 Project, Oct 26, 2016
 
 Files written: Gui.Main.Java, Controller.DumbAI.Java, Controller.MinMax.Java
 
