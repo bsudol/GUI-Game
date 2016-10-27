@@ -1,7 +1,13 @@
+//netid bas334
 package controller;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import controller.SmartAI;
+import model.Line;
 import model.Board;
 import model.Board.State;
 import model.Game;
@@ -11,7 +17,7 @@ import model.Player;
 
 /**
  * A MinMaxAI is a controller that uses the minimax algorithm to select the next
- * move.  The minimax algorithm searches for the best possible next move, under
+ * move. The minimax algorithm searches for the best possible next move, under
  * the assumption that your opponent will also always select the best possible
  * move.
  *
@@ -41,6 +47,93 @@ import model.Player;
  * to only consider certain kinds of moves.  For five-in-a-row, there are
  * typically at least 70 moves available at each step; but it's (usually) not
  * sensible to go on the opposite side of the board from where all of the other
+ * pieces are; by restricting our search to only part of the board, we can
+ * reduce the space considerably.
+ * 
+ * <p>A second strategy is that we can look only a few moves ahead instead of
+ * planning all the way to the end of the game.  This requires us to be able to
+ * estimate how "good" a given board looks for a player.
+ * 
+ * <p>This class implements the minimax algorithm with support for these two
+ * strategies for reducing the search space.  The abstract method {@link
+ * #moves(Board)} is used to list all of the moves that the AI is willing to
+ * consider, while the abstract method {@link #estimate(Board)} returns
+ * the estimation of how good the board is for the given player.
+ */
+public abstract class MinMaxAI extends Controller {
+
+	/**
+	 * Return an estimate of how good the given board is for me.
+	 * A result of infinity means I have won.  A result of negative infinity
+	 * means that I have lost.
+	 */
+	protected abstract int estimate(Board b);
+	
+	/**
+	 * Return the set of moves that the AI will consider when planning ahead.
+	 * Must contain at least one move if there are any valid moves to make.
+	 */
+	protected abstract Iterable<Location> moves(Board b);
+	
+	/**
+	 * Create an AI that will recursively search for the next move using the
+	 * minimax algorithm.  When searching for a move, the algorithm will look
+	 * depth moves into the future.
+	 *
+	 * <p>choosing a higher value for depth makes the AI smarter, but requires
+	 * more time to select moves.
+	 */
+	protected MinMaxAI(Player me, int depth) {
+		super(me);
+		// TODO Auto-generated method stub
+		final int dep = depth;
+		final Player I = me;
+	}
+	
+	//this will perform the recursive minimax algorithm with Game g and Player p = self to calculate the best move.
+	protected int minimaxalg(Game g, Player p) { 
+		//gather list of available locations
+		List<Location> available = new ArrayList<Location>();
+		for (Location loc : Board.LOCATIONS) {
+			if (g.getBoard().get(loc) == null)
+				available.add(loc);
+		}
+		
+		//base cases
+		if (available.isEmpty()) return 0;
+		//if game is over return score from x
+		if ((g.getBoard()).getState() == State.HAS_WINNER) {
+			if(g.getBoard().getWinner().winner == p) {
+				return 1;
+			}
+			return -1;
+		}
+		
+		//otherwise get a list of new game states for locations
+		for (Location k : available) {
+			//this gets the score for the player
+			int result = 0;
+			int count  = 0;
+			for (Line s : Line.ALL_LINES) {
+				int score = score(b,p,s);
+				result += score;
+			}
+			
+		}
+
+	}
+	
+	/**
+	 * Return the move that maximizes the score according to the minimax
+	 * algorithm described above.
+	 */
+	protected @Override Location nextMove(Game g) {
+		// TODO Auto-generated method stub
+		//might want to add a move or int parameter to call from minimaxalg
+		
+	}
+	
+}
  * pieces are; by restricting our search to only part of the board, we can
  * reduce the space considerably.
  * 
