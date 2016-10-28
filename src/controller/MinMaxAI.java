@@ -85,54 +85,9 @@ public abstract class MinMaxAI extends Controller {
 	 */
 	protected MinMaxAI(Player me, int depth) {
 		super(me);
-		// TODO Auto-generated method stub
-		final int dep = depth;
-		final Player I = me;
-	}
-	
-	//this will perform the recursive minimax algorithm with Game g and Player p = self to calculate the best move.
-	protected int minimaxalg(Game g, Player p) { 
-		//gather list of available locations
-		List<Location> available = new ArrayList<Location>();
-		for (Location loc : Board.LOCATIONS) {
-			if (g.getBoard().get(loc) == null)
-				available.add(loc);
-		}
+		GameTree.maxDepth = depth;
+		GameTree root = new GameTree(me, 0);
 		
-		//base cases
-		if (available.isEmpty()) return 0;
-		//if game is over return score from x
-		if ((g.getBoard()).getState() == State.HAS_WINNER) {
-			if(g.getBoard().getWinner().winner == p) {
-				return 1;
-			}
-			return -1;
-		}
-		
-		//otherwise get a list of new game states for locations
-		//so we need to say basically, if we put an "X" here, what will the game state be, and/or what will the score be
-		List<Integer> allthescores = new ArrayList<>(); 
-		List<Location> goodmoves = new ArrayList<>(); 
-
-		
-		for (Location k : available) {
-            if (turn == 1) { //X's turn select the highest from below minimax() call
-                g.submitMove(p, k);
-                int currentScore = minimaxalg(g, p, depth + 1, 2);
-                allthescores.add(currentScore);
-
-                if (depth == 0) {
-                    goodmoves.add(k);
-                }  
-            } 
-			else if (turn == 2) {//O's turn select the lowest from below minimax() call
-                g.submitMove(p.opponent(), k); 
-                allthescores.add(minimaxalg(g, p, depth + 1, 1));
-            }
-		}
-		
-		//do i need another method to get max and min here.
-        return (turn == 1 ? allthesccores.max : allthescores.min);
 	}
 	
 	/**
@@ -140,10 +95,9 @@ public abstract class MinMaxAI extends Controller {
 	 * algorithm described above.
 	 */
 	protected @Override Location nextMove(Game g) {
+		
+		return null;
 		// TODO Auto-generated method stub
-		
-		//call minmaxalg here and return best move, but not finished
-		
 	}
 	
 }
